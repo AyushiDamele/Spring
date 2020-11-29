@@ -18,6 +18,10 @@ Add this dependency in pom.xml file :
 
 As soon as you save : spring dependencies will be downloaded.
 
+To download pring jar files to eclipse project : 
+Goto -> https://repo.spring.io/release/org/springframework/spring/
+find the latest version after scrolling down click on the latest release version and download Release-dist.zip file
+
 # Spring MVC
 
 ### Dependency Injection 
