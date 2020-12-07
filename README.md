@@ -1,6 +1,6 @@
 # Spring
 
-# To create a new spring project in eclipse :
+### To create a new spring project in eclipse :
 Open eclipse IDE :
 1) Fie-> new > project -> maven -> maven project.
 2) To initialiaze the project : select the arch type or quickstart -> Group ID : "com.ayushi"(any name it will create your package name) , ArtifactID is your project name -> Clikc Finish
@@ -18,7 +18,7 @@ Add this dependency in pom.xml file :
 
 As soon as you save : spring dependencies will be downloaded.
 
-# To download spring jar files in  a java project :
+### To download spring jar files in  a java project :
 1) Goto -> https://repo.spring.io/release/org/springframework/spring/ find the latest version after scrolling down click on the latest release version and download Release-dist.zip file
 2) extract the folder and open the lib directory, copy all the jar files.
 3) Right click on the project and create new folder with name lib 
@@ -29,7 +29,7 @@ As soon as you save : spring dependencies will be downloaded.
 5) Go to lib folder in your project and select all the jar files and add
 6) Click on Apply and Close. 
 
-# Connecting Tomcat with Eclipse
+### Connecting Tomcat with Eclipse
 1) If you are not able to see the servers tab in the console window :
 	1.1) click on window tab -> SHow View -> Other -> Server -> Click on servers
 	1.2) Now you will able to see the server tab in the console window
@@ -41,10 +41,10 @@ As soon as you save : spring dependencies will be downloaded.
 7) Click on OK.
 
 
-# Inversion of Control :
+## Inversion of Control :
 The approach of outsourcing the construction and management of objects
 
-# Spring Container :
+## Spring Container :
 ### Primary functions 
  1) Create and Manage objects(Inversion of Control)
  2) Inject object's dependencies(dependency injection)
@@ -273,6 +273,134 @@ In Approach-1, ComplexAlgorithmImpl is tied to a specific sort algorithm.
 In Approach-2, it says: give me any sort algorithm and I will work with it.
 
 This is **Inversion of Control***.
+
+### Bean Scopes 
+• Scope refers to the lifecycle of a bean
+• How long does the bean live?
+• How many instances are created?
+• How is the bean shared?
+
+Default Scope: **Singleton**
+
+What Is a Singleton?
+• Spring Container creates only one instance of the bean, by default
+• It is cached in memory
+• All requests for the bean 
+	• will return a SHARED reference to the SAME bean
+
+Explicitly Specify Bean Scope
+```
+<beans … >
+    <bean  id="myCoach" 
+		class="com.luv2code.springdemo.TrackCoach"
+		scope="singleton"> 
+		…    
+	</bean>
+</beans>
+```
+
+Additional Spring Bean Scopes
+Scope 			Description
+singleton 	Create a single shared instance of the bean. Default scope.
+prototype 	Creates a new bean instance for each container request.
+request 	Scoped to an HTTP web request. Only used for web apps.
+session 	Scoped to an HTTP web session. Only used for web apps.
+global-session 	Scoped to a global HTTP web session. Only used for web apps.
+
+Prototype Scope Example
+Prototype scope: new object for each request
+```
+<beans … >
+    <bean  id="myCoach"
+		class="com.luv2code.springdemo.TrackCoach" 
+		scope="prototype">
+		…    
+	</bean>
+</beans>
+```
+
+### Bean Lifecycle
+1)Container Started
+2)Dependencies Injected
+3)Bean Instantiated
+4)Internal Spring Processing
+5)Your Custom Init Method
+6)Bean Is Ready For Use Container Is Shutdown
+7)Your Custom Destroy Method
+8) Stop
+
+### Bean Lifecycle Methods / Hooks 
+• You can add custom code during bean initialization
+	• Calling custom business logic methods 
+	• Setting up handles to resources (db, sockets, ﬁle etc)
+• You can add custom code during bean destruction 
+	• Calling custom business logic method 
+	• Clean up handles to resources (db, sockets, ﬁles etc)
+	
+**Init: method configuration**
+```
+<beans … >    
+	<bean  id="myCoach"
+		class="com.luv2code.springdemo.TrackCoach"
+		init-method="doMyStartupStuff">
+		…    
+	</bean>
+</beans>
+```
+**Destroy: method configuration**
+```
+<beans … >
+    <bean  id="myCoach"
+		class="com.luv2code.springdemo.TrackCoach"
+		init-method="doMyStartupStuff"
+		destroy-method="doMyCleanupStuff">
+		…    
+	</bean>
+</beans>
+```
+Development Process
+1. Deﬁne your methods for init and destroy
+2. Conﬁgure the method names in Spring conﬁg ﬁle
+
+### Java Annotations?
+• Special labels/markers added to Java classes
+• Provide meta-data about the class
+• Processed at compile time or run-time for special processing
+
+Why Spring Configuration with Annotations?
+• XML conﬁguration can be verbose
+• Conﬁgure your Spring beans with Annotations
+• Annotations minimizes the XML conﬁguration
+
+Development Process
+1. Enable component scanning in Spring conﬁg ﬁle
+2. Add the @Component Annotation to your Java classes
+3. Retrieve bean from Spring container
+
+Step 1: Enable component scanning in Spring config file
+```
+<beans … > 
+	<context:component-scan base-package="com.luv2code.springdemo" />
+</beans>
+```
+Step 2: Add the @Component Annotation to your Java classes
+```
+@Component("thatSillyCoach") 
+public class TennisCoach implements Coach { 
+	@Override public String getDailyWorkout() {
+		return "Practice your backhand volley"; 
+	} 
+}
+```
+Step 3: Retrieve bean from Spring container
+```
+Coach theCoach = context.getBean("thatSillyCoach", Coach.class);
+```
+Spring also supports Default Bean IDs
+**• Default bean id:  the class name, make ﬁrst letter lower-case**
+Class Name: TennisCoach
+Default Bean Id: tennisCoach
+If bean id is not specified while @Component Annotation is mentioned, it assumes default beanId.
 
 
 
